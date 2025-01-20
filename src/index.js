@@ -7,7 +7,15 @@ const app = express();
 const port = process.env.PORT || 2924;
 
 //Using cors to prevent from the cors errors
-app.use(cors());
+
+const corsOptions = {
+  origin: "*", // Allow all origins
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors());
 
 app.use(express.json());
 
