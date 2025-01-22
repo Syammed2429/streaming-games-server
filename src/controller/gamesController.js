@@ -43,6 +43,16 @@ router.post(
         return res.status(401).send(errors.array());
       }
 
+      // Check for existing game with same title
+      const existingGame = await Games.findOne({ title: req.body.title })
+        .lean()
+        .exec();
+      if (existingGame) {
+        return res
+          .status(400)
+          .send({ error: "A game with this title already exists" });
+      }
+
       const agenda = await Games.create(req.body);
       console.log("agenda", agenda);
       return res.status(201).send(agenda);
