@@ -9,7 +9,10 @@ const router = express.Router();
 // GET all games
 router.get("/", async (req, res) => {
   try {
-    const games = await Games.find().lean().exec();
+    const games = await Games.find()
+      .sort({ createdAt: -1 }) // Sort by creation date, newest first
+      .lean()
+      .exec();
     return res.status(200).send(games);
   } catch (err) {
     return res.status(500).send({ error: "Something went wrong" });
@@ -54,7 +57,6 @@ router.post(
       }
 
       const agenda = await Games.create(req.body);
-      console.log("agenda", agenda);
       return res.status(201).send(agenda);
     } catch (err) {
       return res.status(500).send({ error: "Something went wrong" });
